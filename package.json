@@ -1,0 +1,38 @@
+{
+  "name": "merkle-tree-supply-chain",
+  "version": "1.0.0",
+  "description": "merkle tree implementation for supply chain use case",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npx babel-node src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/louisinger/merkle-tree-supply-chain.git"
+  },
+  "keywords": [
+    "merkle",
+    "tree",
+    "supply",
+    "chain",
+    "cryptography"
+  ],
+  "author": "Louis Singer",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/louisinger/merkle-tree-supply-chain/issues"
+  },
+  "homepage": "https://github.com/louisinger/merkle-tree-supply-chain#readme",
+  "dependencies": {
+    "crypto-js": "^4.0.0",
+    "merkletreejs": "^0.1.11"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/node": "^7.8.7",
+    "@babel/preset-env": "^7.9.0",
+    "babel-cli": "^6.26.0",
+    "standard": "^14.3.3"
+  }
+}
