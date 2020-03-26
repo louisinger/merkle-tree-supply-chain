@@ -10,8 +10,6 @@ export function isString (value) {
  */
 export function getMerkleRootNode (nodes) {
   // the stop cases
-  console.log('--------------------------')
-  console.log(nodes)
   if (nodes.length === 0) throw new Error('nodes array cannot be empty')
   if (nodes.length === 1) return nodes[0]
   if (nodes.length === 2) return new Node(nodes[0], nodes[1])
