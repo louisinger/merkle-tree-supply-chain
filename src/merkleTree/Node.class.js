@@ -20,11 +20,23 @@ export default class Node {
     }
   }
 
+  treeString (layer = 0) {
+    const indentString = ' '
+    if (this.isLeaf) return `\n${indentString.repeat(layer)}┗${this.data}`
+    return `\n${layer === 0 ? '.' : indentString.repeat(layer) + '┗'}${this.data}${this.left.treeString(layer + 1)}${this.right.treeString(layer + 1)}`
+  }
+
+  print () {
+    console.log(this.treeString())
+  }
+
+  /** getter for the node's data */
   get data () {
     if (this.isLeaf) return this.leafData
     return hash(this.left.data + this.right.data)
   }
 
+  /** getter returning true if the node is a leaf */
   get isLeaf () {
     if (!this.right && !this.left) return true
     if (this.right instanceof Node && this.left instanceof Node) return false

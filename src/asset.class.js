@@ -15,7 +15,6 @@ export default class Asset {
       if (this.assets[asset.hashType]) this.assets[asset.hashType].push(asset)
       else this.assets[asset.hashType] = [asset]
     }, {})
-    console.log(this.assets)
   }
 
   /**
@@ -23,7 +22,8 @@ export default class Asset {
    * @param {Asset!} asset an asset to add.
    */
   add (asset) {
-    this.assets.push(asset)
+    if (this.assets[asset.hashType]) this.assets[asset.hashType].push(asset)
+    else this.assets[asset.hashType] = [asset]
   }
 
   /** Returns the hash of the characteristics. */
