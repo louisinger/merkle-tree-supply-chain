@@ -1,5 +1,4 @@
-import sha256 from 'crypto-js/sha256'
-import { MerkleTree } from 'merkletreejs'
+import hash from './hash.utils'
 
 export default class Asset {
   /**
@@ -12,25 +11,26 @@ export default class Asset {
     this.assets = assets
   }
 
-  get hash () {
-    return sha256(JSON.stringify(this)).toString()
+  /**
+   * Add an asset.
+   * @param {Asset!} asset an asset to add.
+   */
+  add (asset) {
+    this.assets.push(asset)
   }
 
+  /**
+   * Returns the hash of the characteristics.
+   */
+  get hashCharacteristics () {
+    return hash(JSON.stringify(this.characteristics))
+  }
+
+  /**
+   * Getter for the merkle tree of the assets.
+   */
   get merkleTree () {
-    const hashCharacteristics = sha256(JSON.stringify(this.characteristics)).toString()
-    const leaves = [hashCharacteristics]
-    if (this.assets) {
-      leaves.push(
-        new MerkleTree([...this.assets.map(asset => asset.merkleTreeRoot)], sha256)
-          .getRoot()
-          .toString('hex')
-      )
-    }
-    return new MerkleTree(leaves, sha256)
-  }
 
-  get merkleTreeRoot () {
-    return this.merkleTree.getRoot().toString('hex')
   }
 
   toString () {
