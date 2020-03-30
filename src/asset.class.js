@@ -26,11 +26,14 @@ export default class Asset {
     else this.assets[asset.hashType] = [asset]
   }
 
-  /** Returns the hash of the characteristics. */
+  /** Returns the hash of the type. */
   get hashType () {
     return hash(JSON.stringify(this.type)).toString()
   }
 
+  /**
+   * Getter, return true if the asset does not contains others assets.
+   */
   get isItem () {
     return this.assets === null
   }
