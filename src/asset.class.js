@@ -9,11 +9,11 @@ export default class Asset {
    * @param {Array<Asset>} initialAssets the initial assets.
    */
   constructor (type, initialAssets = []) {
-    this.type = type
+    this.type = hash(JSON.stringify(type)).toString()
     initialAssets.length > 0 ? this.assets = {} : this.assets = null
     initialAssets.forEach((asset) => {
-      if (this.assets[asset.hashType]) this.assets[asset.hashType].push(asset)
-      else this.assets[asset.hashType] = [asset]
+      if (this.assets[asset.type]) this.assets[asset.type].push(asset)
+      else this.assets[asset.type] = [asset]
     }, {})
   }
 
@@ -22,35 +22,24 @@ export default class Asset {
    * @param {Asset!} asset an asset to add.
    */
   add (asset) {
-    if (this.assets[asset.hashType]) this.assets[asset.hashType].push(asset)
-    else this.assets[asset.hashType] = [asset]
+    if (this.assets[asset.type]) this.assets[asset.type].push(asset)
+    else this.assets[asset.type] = [asset]
   }
 
-  /** Returns the hash of the type. */
-  get hashType () {
-    return hash(JSON.stringify(this.type)).toString()
-  }
-
-  /**
-   * Getter, return true if the asset does not contains others assets.
-   */
+  /** Getter, return true if the asset does not contains others assets. */
   get isItem () {
     return this.assets === null
   }
 
   /** Returns the merkle root node of the asset */
   get node () {
-    if (this.isItem) return new Node(this.hashType)
+    if (this.isItem) return new Node(this.type)
     const assetsNodes = []
     Object.keys(this.assets).forEach(key => {
       const root = getMerkleRootNode(this.assets[key].map(asset => asset.node))
       assetsNodes.push(root)
     })
     const assetsRootNode = getMerkleRootNode(assetsNodes)
-    return getMerkleRootNode([new Node(this.hashType), assetsRootNode])
-  }
-
-  toString () {
-    return `__Asset__\nhash: ${this.hash}\ncharacteristics: ${JSON.stringify(this.characteristics)}\nassets: ${this.assets ? this.assets.map(a => a.hash) : 'NULL'}`
+    return getMerkleRootNode([new Node(this.type), assetsRootNode])
   }
 }

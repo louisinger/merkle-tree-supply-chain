@@ -11,7 +11,7 @@ export default class Node {
     if (isString(left) && !right) {
       this.left = null
       this.right = null
-      this.leafData = hash(this.left)
+      this.leafData = hash(left)
     } else if (left instanceof Node && right instanceof Node) {
       this.left = left
       this.right = right
@@ -20,12 +20,19 @@ export default class Node {
     }
   }
 
+  /**
+   * Generate the tree string.
+   * @param {Number} layer layer number using to manage indentation.
+   */
   treeString (layer = 0) {
     const indentString = ' '
     if (this.isLeaf) return `\n${indentString.repeat(layer)}┗${this.data}`
     return `\n${layer === 0 ? '.' : indentString.repeat(layer) + '┗'}${this.data}${this.left.treeString(layer + 1)}${this.right.treeString(layer + 1)}`
   }
 
+  /**
+   * Print the tree string of the node.
+   */
   print () {
     console.log(this.treeString())
   }
