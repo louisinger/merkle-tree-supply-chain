@@ -1,16 +1,22 @@
 import Asset from './asset.class'
+import { newKeyPairs } from './merkleTree/utils'
 
-const pill0 = new Asset({ name: 'pill', type: 'doliprane 500mg' })
-const pill1 = new Asset({ name: 'pill', type: 'doliprane 500mg' })
-const pill2 = new Asset({ name: 'pill', type: 'doliprane 500mg' })
+// a user represented as a keypair.
+const user = newKeyPairs()
+// the timestamp should be stored somewhere by the user.
+const nowTimestamp = Date.now()
 
-const pill3 = new Asset({ name: 'pill', type: 'doliprane 1000mg' })
-const pill4 = new Asset({ name: 'pill', type: 'doliprane 1000mg' })
+const pill0 = new Asset({ name: 'pill', type: 'doliprane 500mg' }, nowTimestamp, user.privateKey)
+const pill1 = new Asset({ name: 'pill', type: 'doliprane 500mg' }, nowTimestamp, user.privateKey)
+const pill2 = new Asset({ name: 'pill', type: 'doliprane 500mg' }, nowTimestamp, user.privateKey)
+
+const pill3 = new Asset({ name: 'pill', type: 'doliprane 1000mg' }, nowTimestamp, user.privateKey)
+const pill4 = new Asset({ name: 'pill', type: 'doliprane 1000mg' }, nowTimestamp, user.privateKey)
 
 const pills = [pill0, pill1, pill2, pill3, pill4]
 
-const box = new Asset({ name: 'box', type: 'doliprane' }, pills)
-const batch = new Asset({ name: 'batch', serialNumber: 'xz2' }, [box])
+const box = new Asset({ name: 'box', type: 'doliprane' }, nowTimestamp, user.privateKey, pills)
+const batch = new Asset({ name: 'batch', serialNumber: 'xz2' }, nowTimestamp, user.privateKey, [box])
 
 console.log('\n--- box ---')
 box.node.print()

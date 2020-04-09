@@ -47,6 +47,6 @@ export default class Node {
   get isLeaf () {
     if (!this.right && !this.left) return true
     if (this.right instanceof Node && this.left instanceof Node) return false
-    throw new Error('Malformed Node !')
+    throw new Error('Malformed Node ! I can\'t test the node...')
   }
 }

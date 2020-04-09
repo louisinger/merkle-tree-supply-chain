@@ -1,20 +1,31 @@
 import hash from './hash.utils'
 import Node from './merkleTree/Node.class'
-import { getMerkleRootNode } from './merkleTree/utils'
+import { getMerkleRootNode, sign } from './merkleTree/utils'
 
 export default class Asset {
   /**
    * Asset constructor.
-   * @param {Object} type the assets' characteristics (color, shape etc...)
+   * @param {Object!} type the assets' characteristics (color, shape etc...)
+   * @param {Number!} timestamp the creation timestamp of the asset.
+   * @param {crypto.KeyLike!} privateKey used to sign the asset.
    * @param {Array<Asset>} initialAssets the initial assets.
    */
-  constructor (type, initialAssets = []) {
+  constructor (type, timestamp, privateKey, initialAssets = []) {
+    // hash the asset type
     this.type = hash(JSON.stringify(type)).toString()
+    // sort the initial assets by type
     initialAssets.length > 0 ? this.assets = {} : this.assets = null
     initialAssets.forEach((asset) => {
       if (this.assets[asset.type]) this.assets[asset.type].push(asset)
       else this.assets[asset.type] = [asset]
     }, {})
+
+    // create the signature
+    const caracteristicsNode = getMerkleRootNode([new Node(this.type), new Node(hash(timestamp).toString())])
+    this.signature = sign(caracteristicsNode.data.toString(), privateKey)
+
+    // generate the type node
+    this.definitionNode = new Node(caracteristicsNode, new Node(this.signature))
   }
 
   /**
@@ -33,13 +44,13 @@ export default class Asset {
 
   /** Returns the merkle root node of the asset */
   get node () {
-    if (this.isItem) return new Node(this.type)
+    if (this.isItem) return this.definitionNode
     const assetsNodes = []
     Object.keys(this.assets).forEach(key => {
       const root = getMerkleRootNode(this.assets[key].map(asset => asset.node))
       assetsNodes.push(root)
     })
     const assetsRootNode = getMerkleRootNode(assetsNodes)
-    return getMerkleRootNode([new Node(this.type), assetsRootNode])
+    return getMerkleRootNode([this.definitionNode, assetsRootNode])
   }
 }
