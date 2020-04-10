@@ -22,10 +22,9 @@ export default class Asset {
 
     // create the signature
     const caracteristicsNode = getMerkleRootNode([new Node(this.type), new Node(hash(timestamp).toString())])
-    this.signature = sign(caracteristicsNode.data.toString(), privateKey)
-
+    const signature = sign(caracteristicsNode.data.toString(), privateKey)
     // generate the type node
-    this.definitionNode = new Node(caracteristicsNode, new Node(this.signature))
+    this.definitionNode = new Node(caracteristicsNode, new Node(signature, null, true))
   }
 
   /**

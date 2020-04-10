@@ -1,5 +1,7 @@
 import Asset from './asset.class'
-import { newKeyPairs } from './merkleTree/utils'
+import { newKeyPairs, verify } from './merkleTree/utils'
+
+console.log('creating objects...')
 
 // a user represented as a keypair.
 const user = newKeyPairs()
@@ -18,18 +20,22 @@ const pills = [pill0, pill1, pill2, pill3, pill4]
 const box = new Asset({ name: 'box', type: 'doliprane' }, nowTimestamp, user.privateKey, pills)
 const batch = new Asset({ name: 'batch', serialNumber: 'xz2' }, nowTimestamp, user.privateKey, [box])
 
+console.log('objects created.')
+
+console.log('results:')
 console.log('\n--- box ---')
 box.node.print()
 console.log('\n--- batch ---')
 batch.node.print()
+console.log('\nVerify signature:')
+console.log(`public key: \n${user.publicKey}`)
 
-/**
-// We have three pieces of data
-const data = ['a', 'b', 'c']
-// Transform them into leaves: 'A', 'B' and 'C'
-const leaves = data.map(pieceOfData => new Node(pieceOfData))
-// Call the merkle root function
-const merkleRoot = getMerkleRootNode(leaves)
-// Print the tree
-merkleRoot.print()
-*/
+// get signature and signed data
+const batchDefinitionNode = batch.node.left
+const batchCaracteristicsNode = batchDefinitionNode.left
+const batchSignatureNode = batchDefinitionNode.right
+
+// verify the signature
+const isVerified = verify(batchCaracteristicsNode.data, batchSignatureNode.data, user.publicKey)
+
+console.log(`Verification: ${isVerified}`)

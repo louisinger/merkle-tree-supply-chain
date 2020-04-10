@@ -6,12 +6,16 @@ export default class Node {
    * Node constructor.
    * @param {Node | String} left the left children of the node.
    * @param {Node} right the right children of the node.
+   * @param {Boolean} signatureData is a signature data.
    */
-  constructor (left, right = null) {
+  constructor (left, right = null, IsSignature = false) {
     if (isString(left) && !right) {
       this.left = null
       this.right = null
-      this.leafData = hash(left)
+      /**
+       * If the leaf is a signature, do not hash the data.
+       */
+      this.leafData = IsSignature ? left : hash(left).toString()
     } else if (left instanceof Node && right instanceof Node) {
       this.left = left
       this.right = right
@@ -40,7 +44,7 @@ export default class Node {
   /** getter for the node's data */
   get data () {
     if (this.isLeaf) return this.leafData
-    return hash(this.left.data + this.right.data)
+    return hash(this.left.data + this.right.data).toString()
   }
 
   /** getter returning true if the node is a leaf */
