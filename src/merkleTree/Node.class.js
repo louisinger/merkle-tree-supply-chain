@@ -1,4 +1,4 @@
-import hash from '../hash.utils'
+import { SHA256 } from '../hash.utils'
 import { isString } from './utils'
 
 export default class Node {
@@ -15,7 +15,7 @@ export default class Node {
       /**
        * If the leaf is a signature, do not hash the data.
        */
-      this.leafData = IsSignature ? left : hash(left).toString()
+      this.leafData = IsSignature ? left : SHA256(left)
     } else if (left instanceof Node && right instanceof Node) {
       this.left = left
       this.right = right
@@ -37,14 +37,14 @@ export default class Node {
   /**
    * Print the tree string of the node.
    */
-  print () {
-    console.log(this.treeString())
+  print (f = console.log) {
+    f(this.treeString())
   }
 
   /** getter for the node's data */
   get data () {
     if (this.isLeaf) return this.leafData
-    return hash(this.left.data + this.right.data).toString()
+    return SHA256(this.left.data + this.right.data)
   }
 
   /** getter returning true if the node is a leaf */

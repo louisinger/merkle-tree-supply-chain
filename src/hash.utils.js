@@ -1,4 +1,4 @@
-import sha256 from 'crypto-js/sha256'
+import { sha256 } from 'js-sha256'
 
 /**
  * Function that zip two array.
@@ -15,11 +15,20 @@ function zip (arr1, arr2) {
  * @param {Object!} data the data object of the traceable.
  * @param {string!} prefix the prefix to add.
  */
-export function objectSHA256 (data, prefix = '') {
-  const hash = sha256.create()
+export function objectSHA256 (data, prefix = 'A06HVtCUxaqUVoHo774r') {
   const keyValuePairs = zip(Object.keys(data), Object.values(data))
   keyValuePairs.sort()
   const valueToHash = keyValuePairs.toString()
-  hash.update(prefix + valueToHash)
+  return SHA256(valueToHash, prefix)
+}
+
+/**
+ * Return the SHA256 hash of the data.
+ * @param {string!} data data to hash.
+ * @param {string!} prefix optionnal prefix.
+ */
+export function SHA256 (data, prefix = 'A06HVtCUxaqUVoHo774r') {
+  const hash = sha256.create()
+  hash.update(prefix + data)
   return hash.hex()
 }
