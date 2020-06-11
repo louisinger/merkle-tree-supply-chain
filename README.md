@@ -3,6 +3,7 @@
 ## Description
 
 A merkle tree implementation for supply chains use cases.
+more: https://medium.com/chain-accelerator/supply-chain-use-case-merkle-tree-off-chain-f94535ae4638
 
 ## Installation
 
