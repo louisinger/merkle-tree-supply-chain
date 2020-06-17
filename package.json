@@ -1,6 +1,7 @@
 {
   "name": "merkle-tree-supply-chain",
-  "version": "1.0.4",
+  "version": "1.0.5",
+  "type": "module",
   "description": "merkle tree implementation for supply chain use case",
   "main": "main.js",
   "scripts": {
