@@ -1,11 +1,10 @@
 {
   "name": "merkle-tree-supply-chain",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "merkle tree implementation for supply chain use case",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start-demo": "npx babel-node src/demo/scenario.js",
     "start": "npx babel-node src/index.js"
   },
   "repository": {
